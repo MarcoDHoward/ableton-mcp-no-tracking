@@ -1,7 +1,7 @@
 [project]
 name = "ableton-mcp"
-version = "1.4.5"
-description = "Ableton Live integration through the Model Context Protocol"
+version = "1.4.5+notrack"
+description = "Ableton Live integration through the Model Context Protocol (fork with all telemetry and data collection removed)"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
@@ -15,7 +15,6 @@ classifiers = [
 ]
 dependencies = [
     "mcp[cli]>=1.9.0,<2.0.0",
-    "supabase>=2.0.0",
 ]
 
 [project.scripts]
@@ -27,13 +26,12 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["MCP_Server", "MCP_Server.dataset", "MCP_Server.bundled_ableton_remote_script"]
-# MANIFEST.in governs the sdist; this governs the wheel. Both are needed.
-exclude-package-data = { "MCP_Server" = ["config.py"] }
+packages = ["MCP_Server", "MCP_Server.bundled_ableton_remote_script"]
 
 [tool.setuptools.package-data]
 "MCP_Server.bundled_ableton_remote_script" = ["AbletonMCP_init.py"]
 
 [project.urls]
-"Homepage" = "https://github.com/ahujasid/ableton-mcp"
-"Bug Tracker" = "https://github.com/ahujasid/ableton-mcp/issues"
+"Homepage" = "https://github.com/MarcoDHoward/ableton-mcp-no-tracking"
+"Upstream" = "https://github.com/ahujasid/ableton-mcp"
+"Bug Tracker" = "https://github.com/MarcoDHoward/ableton-mcp-no-tracking/issues"

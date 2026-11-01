@@ -1,12 +1,13 @@
 <div align="center">
 
-# Ableton MCP
+# Ableton MCP (no tracking)
 
-**Connect Ableton Live to Claude AI**
+**Connect Ableton Live to Claude AI, without sending your data anywhere**
+
+A fork of [ahujasid/ableton-mcp](https://github.com/ahujasid/ableton-mcp) with all telemetry and dataset collection removed. See [Privacy](#privacy) for exactly what was taken out.
 
 Prompt-assisted music production, end-to-end track creation, and Live session and arrangement manipulation — driven by AI.
 
-[![PyPI Version](https://img.shields.io/pypi/v/ableton-mcp?color=blue)](https://pypi.org/project/ableton-mcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JK4hNKGprW)
 
@@ -42,6 +43,8 @@ Otherwise, install from [uv's official website](https://docs.astral.sh/uv/gettin
         "AbletonMCP": {
             "command": "uvx",
             "args": [
+                "--from",
+                "git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking",
                 "ableton-mcp"
             ]
         }
@@ -56,7 +59,7 @@ Otherwise, install from [uv's official website](https://docs.astral.sh/uv/gettin
 Paste this as a command:
 
 ```
-uvx ableton-mcp
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp
 ```
 </details>
 
@@ -65,8 +68,8 @@ uvx ableton-mcp
 **3. Install the Ableton Remote Script**
 
 ```bash
-uvx --from ableton-mcp ableton-mcp-install-script
-uvx --from ableton-mcp ableton-mcp-install-script --list-targets   # preview target folders first
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp-install-script
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp-install-script --list-targets   # preview target folders first
 ```
 
 **4. Connect**
@@ -98,7 +101,7 @@ That's it — ask Claude to build something.
 - [Troubleshooting](#troubleshooting)
 - [Technical Details](#technical-details)
 - [Limitations & Security Considerations](#limitations--security-considerations)
-- [Telemetry](#telemetry)
+- [Privacy](#privacy)
 - [Join the Community](#join-the-community)
 - [Contributing](#contributing)
 - [Disclaimer](#disclaimer)
@@ -115,7 +118,7 @@ That's it — ask Claude to build something.
 | **Clip creation** | Create and edit MIDI clips with notes |
 | **Arrangement view composition** | Build full songs autonomously in Arrangement View, including sections like intro, buildup, drop, breakdown, and outro |
 | **Session control** | Start and stop playback, fire clips, and control transport across Session View and Arrangement View |
-| **Anonymous telemetry** | Usage tracking to help improve the tool (can be disabled) |
+| **No tracking** | No telemetry, no dataset recording, no network calls besides the local Ableton socket |
 
 ## Components
 
@@ -156,6 +159,8 @@ Go to **Claude → Settings → Developer → Edit Config → `claude_desktop_co
         "AbletonMCP": {
             "command": "uvx",
             "args": [
+                "--from",
+                "git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking",
                 "ableton-mcp"
             ]
         }
@@ -168,7 +173,7 @@ Go to **Claude → Settings → Developer → Edit Config → `claude_desktop_co
 Run ableton-mcp without installing it permanently through uvx. Go to **Cursor Settings → MCP** and paste this as a command:
 
 ```
-uvx ableton-mcp
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp
 ```
 
 > **Warning:** Only run one instance of the MCP server (either on Cursor or Claude Desktop), not both.
@@ -178,7 +183,7 @@ uvx ableton-mcp
 In the terminal, run:
 
 ```
-claude mcp add AbletonMCP uvx ableton-mcp
+claude mcp add AbletonMCP -- uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp
 ```
 
 ### Installing the Ableton Remote Script
@@ -188,8 +193,8 @@ claude mcp add AbletonMCP uvx ableton-mcp
 Install the Remote Script with:
 
 ```bash
-uvx --from ableton-mcp ableton-mcp-install-script
-uvx --from ableton-mcp ableton-mcp-install-script --list-targets   # preview target folders first
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp-install-script
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp-install-script --list-targets   # preview target folders first
 ```
 
 > If you installed the package with `pip` or `pipx`, the command is on your PATH directly — just run `ableton-mcp-install-script`.
@@ -199,7 +204,7 @@ This copies the matching Remote Script into your Ableton **User Library**'s `Rem
 If your User Library lives somewhere non-standard and isn't detected, point the installer at it directly:
 
 ```bash
-uvx --from ableton-mcp ableton-mcp-install-script --target "/path/to/User Library/Remote Scripts"
+uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp-install-script --target "/path/to/User Library/Remote Scripts"
 ```
 
 > The legacy `Preferences/User Remote Scripts` folder (used for instant-mapping configs, not Python control surfaces) is no longer targeted by default; pass `--legacy` if you need it for an old Live version.
@@ -210,7 +215,7 @@ Then **restart Ableton** (or re-select the AbletonMCP control surface) so Live l
 
 **First-time Ableton setup:**
 
-1. Run `uvx --from ableton-mcp ableton-mcp-install-script`
+1. Run `uvx --from git+https://github.com/MarcoDHoward/ableton-mcp-no-tracking ableton-mcp-install-script`
 2. Launch Ableton Live
 3. Go to **Settings/Preferences → Link, Tempo & MIDI**
 4. In the **Control Surface** dropdown, select **AbletonMCP**
@@ -297,56 +302,23 @@ The system uses a simple JSON-based protocol over TCP sockets:
 
 ---
 
-## Telemetry
+## Privacy
 
-There are two tiers, and they have different defaults.
+This fork sends nothing anywhere. The only network connection it makes is to the Ableton Remote Script on `127.0.0.1:9877`.
 
-**Anonymous telemetry — on by default.** A random install ID, a per-run session ID, which tools ran, whether they succeeded, and how long they took. This is what counts active users and catches broken tools. It contains none of your content: no prompts, no MIDI, no track or clip names, no device settings.
+Removed from upstream:
 
-**Dataset recording — off by default, opt-in.** Everything with your work in it: prompts, MIDI notes, track and clip names, and device settings, which may be published as part of an open dataset used to train music-production models. Nothing here is collected unless you explicitly turn it on.
+- **Anonymous telemetry**: install UUID, session ID, tool names, timings, sent to Supabase (`telemetry.py`, `telemetry_decorator.py`).
+- **Dataset recording**: prompts, MIDI, full project snapshots, ratings and auditions uploaded for model training (`MCP_Server/dataset/`).
+- **The `user_prompt` argument** on every tool, which asked the AI to forward your chat message to the server.
+- **The six dataset tools**: `set_dataset_consent`, `submit_intent`, `rate_last_action`, `prefer_candidate`, `reject_last_action`, `record_audition`.
+- **Passive listeners in the Remote Script**, which buffered your manual edits in Live (track and clip names, mute, volume and so on), and the `drain_passive_events` command.
+- **The `supabase` dependency.**
+- **Logging of command parameters**, which put MIDI, names and paths in local log files.
 
-To see exactly what data each tier collects, see the [Terms & Data Use](TERMS.md).
+No `~/.ableton-mcp/consent.json` or `customer_uuid.txt` is created. See [TERMS.md](TERMS.md).
 
-### Opting in to dataset recording
-
-Either set the environment variable before starting the server:
-
-```bash
-export ABLETON_MCP_ENABLE_DATASET=true
-```
-
-…or answer the question when your client asks it. On your first tool call you're asked once — as a dialog if your client supports MCP elicitation, otherwise as a message in the chat — and answering yes turns it on from that point. Your answer is stored in `~/.ableton-mcp/consent.json`. Declining, or never answering, records nothing. If you dismiss the dialog without choosing, that isn't treated as an answer and you may be asked again in a later session.
-
-### Opting out of anonymous telemetry
-
-Set one of these before starting the MCP server:
-
-```bash
-export ABLETON_MCP_DISABLE_TELEMETRY=true
-```
-
-Or use any of these alternatives:
-
-- `DISABLE_TELEMETRY=true`
-- `MCP_DISABLE_TELEMETRY=true`
-
-This also disables dataset recording. `ABLETON_MCP_DISABLE_DATASET=true` turns off dataset recording only, and overrides any stored grant.
-
-For Claude Desktop, add the environment variable to your config:
-
-```json
-{
-    "mcpServers": {
-        "AbletonMCP": {
-            "command": "uvx",
-            "args": ["ableton-mcp"],
-            "env": {
-                "ABLETON_MCP_DISABLE_TELEMETRY": "true"
-            }
-        }
-    }
-}
-```
+The Remote Script still listens on `127.0.0.1:9877` without authentication, as upstream does, so any program running on your computer can control Live through it. Set `ABLETON_MCP_HOST` only if you understand that it exposes the socket beyond this machine.
 
 ---
 
@@ -356,11 +328,11 @@ Give feedback, get inspired, and build on top of the MCP: [**Discord**](https://
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome. Please open a Pull Request. Musical features belong upstream at [ahujasid/ableton-mcp](https://github.com/ahujasid/ableton-mcp); this fork only removes data collection.
 
 ## Disclaimer
 
-This is a third-party integration and not made by Ableton. Made by [Siddharth](https://x.com/sidahuj).
+This is a third-party integration and not made by Ableton. Original project by [Siddharth](https://x.com/sidahuj); this fork only removes data collection.
 
 ---
 
